@@ -17,7 +17,7 @@ app.use(cors());
 
 
 
-app.use(require("./src/routes/index"));
+app.use(require("./routes/index"));
 
 app.listen(app.get("port"), () => {
   console.log("hola desde el puerto " + app.get("port"));
