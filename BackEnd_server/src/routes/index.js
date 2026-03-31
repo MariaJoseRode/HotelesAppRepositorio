@@ -1,3 +1,4 @@
+const e = require("express");
 const { Router } = require("express");
 const router = Router();
 
@@ -59,8 +60,34 @@ router.get("/detallehotel", (req, res) => {
 //Rutas POST
 
 router.post("/login", (req, res) => {
-  console.log("Se ha accedido al login de la app");
-  res.send("Hola, soy el login y me debes rellenar");
+  const email = req.body.campo_email;
+  const password = req.body.campo_password; 
+
+  const ListaUsuarios = [
+    { email: "pedro@ejemplo.com", password: "123456", nombre: "Pedro" },
+    { email: "maria@terra.es", password: "abcdef", nombre: "Maria" },
+    { email: "laura@dominio.com", password: "fedcba", nombre: "Laura" },
+    { email: "marisa@ejemplo.es", password: "hola1234", nombre: "Marisa" }
+  ];
+
+
+  console.log("Se ha recibido una solicitud de inicio de sesión desde Unity");
+  console.log("Email:", email);
+  console.log("Contraseña:", password);
+
+  const usuarioLogueado = ListaUsuarios.find(usuario => usuario.email === email && usuario.password === password);
+
+  if (usuarioLogueado) {
+    res.json({
+            success: true,
+            mensaje: "Te damos la bienvenida, " + usuarioLogueado.nombre + "!!"
+        });
+  }
+  else {
+    res.json({
+      success: false, 
+      mensaje: "Las credenciales son incorrectas, por favor revísalo y vuelve a intentarlo."
+    })
 });
 
 router.post("/registro", (req, res) => {
