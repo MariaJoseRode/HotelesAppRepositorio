@@ -3,38 +3,58 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 
-public class LoginManager : MonoBehaviour
+public class loginManager : MonoBehaviour
 {
+    public class LoginResponse
+    {
+        public bool success;
+        public string mensaje;
+    }
+
     public TMP_InputField campo_email;
     public TMP_InputField campo_password;
 
-    public void IniciarSesion()
+    public GameObject pantallaLogin;
+    public GameObject pantallaPrincipal;
+
+    public void IntentarLogin()
     {
         if (campo_email.text != "" && campo_password.text != "")
         {
-
             Debug.Log("Enviando datos al servidor...");
-
-
-            StartCoroutine(EnviarDatosLogin(campo_email.text, campo_password.text));
+            StartCoroutine(EnviarDatosAlServidor(campo_email.text, campo_password.text));
         }
         else
         {
-            Debug.Log("Por favor, completa ambos campos.");
+            Debug.Log("Error: Rellena el email y la contraseña.");
         }
-    }
 
-    IEnumerator EnviarDatosLogin(string email, string password)
-    {
-        WWWForm loginForm = new WWWForm();
-        loginForm.AddField("mail_usuario", email);
-        loginForm.AddField("password_usuario", password);
 
-        string urlDelServidor = "http://localhost:8080/login";
-        UnityWebRequest LoginRequest = UnityWebRequest.Post(urlDelServidor, loginForm);
+        IEnumerator EnviarDatosAlServidor(string email, string password)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("emailUsuario", email);
+            form.AddField("passwordUsuario", password);
 
-        yield return LoginRequest.SendWebRequest();
+            string urlDelServidor = "http://localhost:8080/login";
+            UnityWebRequest request = UnityWebRequest.Post(urlDelServidor, form);
 
-        Debug.Log("Respuesta del servidor: " + LoginRequest.downloadHandler.text);
+            yield return request.SendWebRequest();
+
+
+            LoginResponse respuestaLogin = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
+
+            if (respuestaLogin.success == true)
+            {
+                pantallaLogin.SetActive(false);
+                pantallaPrincipal.SetActive(true);
+                Debug.Log(respuestaLogin.mensaje);
+            }
+            else
+            {
+                Debug.Log("Acceso denegado" + respuestaLogin.mensaje);
+            }
+        }
+
     }
 }
