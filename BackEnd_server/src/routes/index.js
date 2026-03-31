@@ -127,6 +127,9 @@ router.post("/actualizardatos", (req, res) => {
   res.send("Hola, debes rellenar el formulario de actualización de datos de usuario");
 });
 
-
+router.post("/oferta", (req, res) => {
+  console.log("Se ha solicitado una oferta desde Unity");
+  res.send({success: true, mensaje: "Utiliza el código HOTELES10 para obtener un 10% de descuento en tu primera reserva"});
+});
 
 module.exports = router;
