@@ -60,8 +60,8 @@ router.get("/detallehotel", (req, res) => {
 //Rutas POST
 
 router.post("/login", (req, res) => {
-  const email = req.body.campo_email;
-  const password = req.body.campo_password; 
+  const email = req.body.usermail;
+  const password = req.body.userpassword; 
 
   const ListaUsuarios = [
     { email: "pedro@ejemplo.com", password: "123456", nombre: "Pedro" },
@@ -88,7 +88,8 @@ router.post("/login", (req, res) => {
       success: false, 
       mensaje: "Las credenciales son incorrectas, por favor revísalo y vuelve a intentarlo."
     })
-});
+  }
+  });
 
 router.post("/registro", (req, res) => {
   console.log("Se ha accedido al registro de la app");

@@ -5,6 +5,8 @@ using TMPro;
 
 public class loginManager : MonoBehaviour
 {
+
+    [System.Serializable]
     public class LoginResponse
     {
         public bool success;
@@ -17,6 +19,7 @@ public class loginManager : MonoBehaviour
     public GameObject pantallaLogin;
     public GameObject pantallaPrincipal;
 
+  
     public void IntentarLogin()
     {
         if (campo_email.text != "" && campo_password.text != "")
@@ -29,32 +32,31 @@ public class loginManager : MonoBehaviour
             Debug.Log("Error: Rellena el email y la contraseña.");
         }
 
+    }
 
-        IEnumerator EnviarDatosAlServidor(string email, string password)
+    IEnumerator EnviarDatosAlServidor(string email, string password)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("usermail", email);
+        form.AddField("userpassword", password);
+
+        string urlDelServidor = "http://localhost:8080/login";
+        UnityWebRequest request = UnityWebRequest.Post(urlDelServidor, form);
+
+        yield return request.SendWebRequest();
+
+
+        LoginResponse respuestaLogin = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
+
+        if (respuestaLogin.success == true)
         {
-            WWWForm form = new WWWForm();
-            form.AddField("emailUsuario", email);
-            form.AddField("passwordUsuario", password);
-
-            string urlDelServidor = "http://localhost:8080/login";
-            UnityWebRequest request = UnityWebRequest.Post(urlDelServidor, form);
-
-            yield return request.SendWebRequest();
-
-
-            LoginResponse respuestaLogin = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
-
-            if (respuestaLogin.success == true)
-            {
-                pantallaLogin.SetActive(false);
-                pantallaPrincipal.SetActive(true);
-                Debug.Log(respuestaLogin.mensaje);
-            }
-            else
-            {
-                Debug.Log("Acceso denegado" + respuestaLogin.mensaje);
-            }
+            pantallaLogin.SetActive(false);
+            pantallaPrincipal.SetActive(true);
+            Debug.Log(respuestaLogin.mensaje);
         }
-
+        else
+        {
+            Debug.Log("Acceso denegado" + respuestaLogin.mensaje);
+        }
     }
 }
