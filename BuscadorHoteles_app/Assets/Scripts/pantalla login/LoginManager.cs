@@ -37,8 +37,8 @@ public class loginManager : MonoBehaviour
     IEnumerator EnviarDatosAlServidor(string email, string password)
     {
         WWWForm form = new WWWForm();
-        form.AddField("usermail", email);
-        form.AddField("userpassword", password);
+        form.AddField("campo_email", email);
+        form.AddField("campo_password", password);
 
         string urlDelServidor = "http://localhost:8080/login";
         UnityWebRequest request = UnityWebRequest.Post(urlDelServidor, form);
