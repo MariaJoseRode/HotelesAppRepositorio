@@ -20,7 +20,39 @@ router.get("/reservas", (req, res) => {
   console.log("Alguien hizo a la pagina de reservas");
   res.send("Hola desde tu pagina de  reservas");
 });
+//  RUTA DETALLES GET! 
+router.get("/detalle-hotel/:nombre", (req, res) => {
+    const nombreHotel = req.params.nombre;
 
+    
+    const baseDatosHoteles = {
+        "Olympia": {
+            estrellas: 4,
+            descripcion: "Un hotel de lujo en el centro de Valencia.",
+            precio: "85€/noche"
+        },
+        "Cascada": {
+            estrellas: 3,
+            descripcion: "Vistas increíbles a la montaña y spa incluido.",
+            precio: "60€/noche"
+        }
+    };
+
+    
+    const info = baseDatosHoteles[nombreHotel] || {
+        estrellas: 0,
+        descripcion: "Información no disponible.",
+        precio: "N/A"
+    };
+
+    res.json({
+        success: true,
+        nombre: nombreHotel,
+        estrellas: info.estrellas,
+        descripcion: info.descripcion,
+        precio: info.precio
+    });
+});
 router.get("/gps", (req, res) => {
   console.log("Alguien hizo a la pagina de gps");
   res.send("Hola desde tu pagina del gps");
@@ -96,9 +128,23 @@ router.post("/registro", (req, res) => {
   res.send("Hola, debes rellenar el formulario de registro");
 });
 
+//router.post("/reservar", (req, res) => {
+ // console.log("Se ha accedido a la reserva de un hotel");
+//  res.send("Hola, debes rellenar el formulario de reserva");
+//});
+//  NUEVA RUTA RESERVA !!!11
+
 router.post("/reservar", (req, res) => {
-  console.log("Se ha accedido a la reserva de un hotel");
-  res.send("Hola, debes rellenar el formulario de reserva");
+    
+    const emailUsuario = req.body.campo_email; 
+    
+    console.log(`Petición de reserva recibida del usuario: ${emailUsuario}`);
+
+    
+    res.json({
+        success: true,
+        mensaje: "¡Reservado con éxito! Tu hotel te espera."
+    });
 });
 
 router.post("/contacto", (req, res) => {
