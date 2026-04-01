@@ -11,11 +11,11 @@ public class botondetalles : MonoBehaviour
 
     public void ClickEnBotonAzul(string nombreDelHotel)
     {
-        // Usamos EscapeURL para que "Hotel Olympia" no rompa la URL
+        
         string nombreEscapado = UnityEngine.Networking.UnityWebRequest.EscapeURL(nombreDelHotel);
         string urlFinal = "http://localhost:8080/detalle-hotel/" + nombreEscapado;
 
-        Debug.Log("Pidiendo a: " + urlFinal); // Para que veas en consola la ruta exacta
+        Debug.Log("Pidiendo a: " + urlFinal); 
         StartCoroutine(GetDetalleHotel(urlFinal));
     }
 
@@ -28,14 +28,17 @@ public class botondetalles : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 HotelData info = JsonUtility.FromJson<HotelData>(request.downloadHandler.text);
-                Debug.Log("--- DATOS DEL HOTEL ---");
-                Debug.Log("Nombre: " + info.nombre);
+                Debug.Log(" *** DATOS DEL HOTEL *** ");
+                   Debug.Log("Nombre: " + info.nombre);
                 Debug.Log("Descripción: " + info.descripcion);
-                Debug.Log("-----------------------");
+                Debug.Log("Estrellas: " + info.estrellas);
+                Debug.Log("Precio: " + info.precio);
+                Debug.Log("            *            ");
+                
             }
             else
             {
-                // Si sale 404 aquí, revisa que en Node la ruta sea /detalle-hotel/:nombre
+                
                 Debug.LogError("Error: " + request.responseCode + " - " + request.error);
             }
         }

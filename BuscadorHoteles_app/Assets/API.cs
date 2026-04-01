@@ -23,7 +23,7 @@ public class API : MonoBehaviour
     IEnumerator POST_Login(string uri)
     {
         WWWForm form = new WWWForm();
-        form.AddField("campo_email", inputEmail.text);
+         form.AddField("campo_email", inputEmail.text);
         form.AddField("campo_password", inputPassword.text);
 
         UnityWebRequest request = UnityWebRequest.Post(uri, form);
@@ -37,6 +37,33 @@ public class API : MonoBehaviour
         else
         {
             Debug.LogError("Error: " + request.error);
+        }
+    }
+    public void ClickEnBotonOferta()
+    {
+        StartCoroutine(PostOferta("http://localhost:8080/oferta"));
+    }
+
+    IEnumerator PostOferta(string uri)
+    {
+        WWWForm form = new WWWForm();
+        
+        form.AddField("peticion", "oferta");
+
+        UnityWebRequest request = UnityWebRequest.Post(uri, form);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            
+             RespuestaNode data = JsonUtility.FromJson<RespuestaNode>(request.downloadHandler.text);
+
+            Debug.Log("*** OFERTA RECIBIDA ***");
+            Debug.Log(data.mensaje);
+        }
+        else
+        {
+            Debug.LogError("Error en oferta: " + request.error);
         }
     }
 } 

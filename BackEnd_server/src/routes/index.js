@@ -20,37 +20,21 @@ router.get("/reservas", (req, res) => {
   console.log("Alguien hizo a la pagina de reservas");
   res.send("Hola desde tu pagina de  reservas");
 });
-//  RUTA DETALLES GET! 
-router.get("/detalle-hotel/:nombre", (req, res) => {
-    const nombreHotel = req.params.nombre;
 
+
+
+
+//  reservas 
+router.get("/mis-reservas", (req, res) => {
+    console.log("Consultando calendario de reservas...");
     
-    const baseDatosHoteles = {
-        "Olympia": {
-            estrellas: 4,
-            descripcion: "Un hotel de lujo en el centro de Valencia.",
-            precio: "85€/noche"
-        },
-        "Cascada": {
-            estrellas: 3,
-            descripcion: "Vistas increíbles a la montaña y spa incluido.",
-            precio: "60€/noche"
-        }
-    };
-
     
-    const info = baseDatosHoteles[nombreHotel] || {
-        estrellas: 0,
-        descripcion: "Información no disponible.",
-        precio: "N/A"
-    };
-
     res.json({
         success: true,
-        nombre: nombreHotel,
-        estrellas: info.estrellas,
-        descripcion: info.descripcion,
-        precio: info.precio
+        hotel: "Hotel Olympia",
+        fechaInicio: "25 de abril",
+        fechaFin: "6 de mayo",
+        estado: "Confirmada"
     });
 });
 router.get("/gps", (req, res) => {
@@ -58,10 +42,20 @@ router.get("/gps", (req, res) => {
   res.send("Hola desde tu pagina del gps");
 });
 
+//router.get("/favoritos", (req, res) => {
+//  console.log("Alguien hizo a la pagina de favoritos");
+ // res.send("Hola desde tus favoritos");
+//});
+
+//  RUTA FAVSS GET
 router.get("/favoritos", (req, res) => {
-  console.log("Alguien hizo a la pagina de favoritos");
-  res.send("Hola desde tus favoritos");
+    console.log("Alguien está consultando sus favoritos...");
+    res.json({
+        success: true,
+        lista: ["Hotel Olympia", "Hotel Cascada del Rey", "Apartamentos Playa"]
+    });
 });
+
 
 router.get("/ajustes", (req, res) => {
   console.log("Alguien hizo a la pagina de ajustes");
@@ -87,13 +81,44 @@ router.get("/detallehotel", (req, res) => {
   console.log("Alguien hizo a la pagina del detalle del hotel");
   res.send("Hola desde la pagina de detalle del hotel");
 });
+//  RUTA DETALLES GET! 
+router.get("/detalle-hotel/:nombre", (req, res) => {
+    const nombreHotel = req.params.nombre;
 
+    
+    const baseDatosHoteles = {
+        "Olympia": {
+            estrellas: 4,
+            descripcion: "Un hotel de lujo en el centro de Valencia.",
+            precio: "85€/noche"
+        },
+        "Cascada": {
+            estrellas: 3,
+            descripcion: "Vistas increíbles a la montaña y spa incluido.",
+            precio: "60€/noche"
+        }
+    };
+
+    const info = baseDatosHoteles[nombreHotel] || {
+        estrellas: 0,
+        descripcion: "Información no disponible.",
+        precio: "N/A"
+    };
+
+    res.json({
+        success: true,
+        nombre: nombreHotel,
+        estrellas: info.estrellas,
+        descripcion: info.descripcion,
+        precio: info.precio
+    });
+});
 
 //Rutas POST
 
 router.post("/login", (req, res) => {
-  const email = req.body.usermail;
-  const password = req.body.userpassword; 
+  const email = req.body.campo_email;
+  const password = req.body.campo_password; 
 
   const ListaUsuarios = [
     { email: "pedro@ejemplo.com", password: "123456", nombre: "Pedro" },

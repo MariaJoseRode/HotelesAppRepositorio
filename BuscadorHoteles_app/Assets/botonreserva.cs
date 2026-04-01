@@ -10,7 +10,7 @@ public class botonreserva : MonoBehaviour
     public TMP_InputField inputEmail;
     public TMP_InputField inputPassword;
 
-    // Esta es la función que debes asignar al botón naranja en el OnClick
+    
     public void ClickEnBotonNaranja()
     {
         Debug.Log("Pulsado el botón. Enviando petición de reserva...");
@@ -21,7 +21,7 @@ public class botonreserva : MonoBehaviour
     {
         WWWForm form = new WWWForm();
 
-        // Enviamos los datos que el servidor espera
+        
         form.AddField("campo_email", inputEmail.text);
         form.AddField("campo_password", inputPassword.text);
 
@@ -30,20 +30,20 @@ public class botonreserva : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            // Convertimos el JSON que nos da Node a una clase de C#
+           
             RespuestaNode data = JsonUtility.FromJson<RespuestaNode>(request.downloadHandler.text);
 
             if (data.success)
             {
-                // ESTO ES LO QUE SALE POR CONSOLA
-                Debug.Log("--- RESPUESTA DEL SERVIDOR ---");
+                
+                
                 Debug.Log("Mensaje: " + data.mensaje);
-                Debug.Log("------------------------------");
+                  Debug.Log("  ");
             }
         }
         else
         {
-            // Esto saldrá en rojo en la consola si el servidor está apagado
+            
             Debug.LogError("ERROR: No se pudo conectar con el servidor. ¿Está Node.js encendido?");
         }
     }
