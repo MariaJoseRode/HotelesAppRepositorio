@@ -30,10 +30,14 @@ router.get("/getSQL", (req, res) => {
 //-- ruta post ---
 router.post("/postSQL", (req, res) => {
     
-    let post = { Usuario: "pruebaNODE", Contraseña: "12345" }; 
+   // let post = { Usuario: "pruebaNODE", Contraseña: "12345" }; 
+   let NuevoUsuario = { 
+        Usuario: req.body.usuario,
+        Contraseña: req.body.pass
+    }; 
     let sql = "INSERT INTO hoteles_usuarios SET ?";
     
-    db.query(sql, post, (err, result) => {
+    db.query(sql, NuevoUsuario, (err, result) => {
         //en estas partes se ha añadido un if else por si hay algun error, para que el sistema no se quede colgado.
         if (err) {
             res.status(500).json({ error: err });
