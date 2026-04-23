@@ -31,6 +31,7 @@ router.get("/getSQL", (req, res) => {
 router.post("/postSQL", (req, res) => {
     
    // let post = { Usuario: "pruebaNODE", Contraseña: "12345" }; 
+   //http://localhost:8080/api/MySQL/postSQL
    let NuevoUsuario = { 
         Usuario: req.body.usuario,
         Contraseña: req.body.pass

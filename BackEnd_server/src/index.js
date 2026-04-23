@@ -24,4 +24,5 @@ app.listen(app.get("port"), () => {
 });
 
 //nuevo para mysql
+//http://localhost:8080/api/MySQL/getSQL
 app.use("/api/MySQL", require("./routes/MySQL"));
