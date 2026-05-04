@@ -37,10 +37,10 @@ public class loginManager : MonoBehaviour
     IEnumerator EnviarDatosAlServidor(string email, string password)
     {
         WWWForm form = new WWWForm();
-        form.AddField("campo_email", email);
-        form.AddField("campo_password", password);
+        form.AddField("usuario", email);
+        form.AddField("pass", password);
 
-        string urlDelServidor = "http://localhost:8080/login";
+        string urlDelServidor = "http://localhost:8080/api/MySQL/login";
         UnityWebRequest request = UnityWebRequest.Post(urlDelServidor, form);
 
         yield return request.SendWebRequest();
@@ -50,6 +50,9 @@ public class loginManager : MonoBehaviour
 
         if (respuestaLogin.success == true)
         {
+            PlayerPrefs.SetString("EmailLogueado", email);
+            PlayerPrefs.Save();
+
             pantallaLogin.SetActive(false);
             pantallaPrincipal.SetActive(true);
             Debug.Log(respuestaLogin.mensaje);

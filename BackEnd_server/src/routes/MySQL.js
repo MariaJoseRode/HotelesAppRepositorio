@@ -49,4 +49,44 @@ router.post("/postSQL", (req, res) => {
     });
 });
 
+
+//Ruta POST para login
+router.post("/login", (req, res) => {
+    let mailRecibido = req.body.usuario;
+    let contrasenyaRecibida = req.body.pass;
+
+    let sql = "SELECT * FROM hoteles_usuarios WHERE Usuario = ? and Contraseña = ?";
+
+    db.query(sql, [mailRecibido, contrasenyaRecibida], (err, result) => {
+            //Error de conexión
+        if (err) {
+              return res.status(500).json({success: false, mensaje: "Error del servidor " + err.message});
+            }
+            //Result mayor que 0, ha encontrado una coincidencia
+            if (result.length > 0){
+                    res.json({ success: true, mensaje: "¡Login correcto! Bienvenido/a." });
+        } else {
+                     res.json({ success: false, mensaje: "Parece que hay un error" });
+            }
+    });
+
+});
+
+// Ruta POST para guardar los datos del perfil
+router.post("/guardarPerfil", (req, res) => {
+    //Variable que recoge los datos de unity
+    let nuevoPerfil = {
+        nombre_completo: req.body.NombreUnity,
+        direccion: req.body.DireccionUnity
+    };
+    
+    //Inserción en la BBDD "perfiles"
+    let sql = "INSERT INTO perfiles SET ?";
+
+    db.query (sql, nuevoPerfil, (err, result) => {
+        if (err) return res.status(500).json({ success: false, error: err.message});
+        res.json({success: true, mensaje: "Se han guardado los datos de tu perfil"})
+    });
+});
+
 module.exports = router;
