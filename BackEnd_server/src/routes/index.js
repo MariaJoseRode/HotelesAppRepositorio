@@ -82,37 +82,37 @@ router.get("/detallehotel", (req, res) => {
   res.send("Hola desde la pagina de detalle del hotel");
 });
 //  RUTA DETALLES GET! 
-router.get("/detalle-hotel/:nombre", (req, res) => {
-    const nombreHotel = req.params.nombre;
+//router.get("/detalle-hotel/:nombre", (req, res) => {
+   // const nombreHotel = req.params.nombre;
 
     
-    const baseDatosHoteles = {
-        "Olympia": {
-            estrellas: 4,
-            descripcion: "Un hotel de lujo en el centro de Valencia.",
-            precio: "85€/noche"
-        },
-        "Cascada": {
-            estrellas: 3,
-            descripcion: "Vistas increíbles a la montaña y spa incluido.",
-            precio: "60€/noche"
-        }
-    };
+    //const baseDatosHoteles = {
+      //  "Olympia": {
+      //      estrellas: 4,
+      //      descripcion: "Un hotel de lujo en el centro de Valencia.",
+     //       precio: "85€/noche"
+     //   },
+     //   "Cascada": {
+      //      estrellas: 3,
+        //    descripcion: "Vistas increíbles a la montaña y spa incluido.",
+         //   precio: "60€/noche"
+        //}
+   // };
 
-    const info = baseDatosHoteles[nombreHotel] || {
-        estrellas: 0,
-        descripcion: "Información no disponible.",
-        precio: "N/A"
-    };
+   // const info = baseDatosHoteles[nombreHotel] || {
+   //     estrellas: 0,
+   //     descripcion: "Información no disponible.",
+    //    precio: "N/A"
+   // };
 
-    res.json({
-        success: true,
-        nombre: nombreHotel,
-        estrellas: info.estrellas,
-        descripcion: info.descripcion,
-        precio: info.precio
-    });
-});
+ //   res.json({
+   //     success: true,
+   //     nombre: nombreHotel,
+  //      estrellas: info.estrellas,
+   //     descripcion: info.descripcion,
+ //       precio: info.precio
+ //   });
+//});
 
 //Rutas POST
 

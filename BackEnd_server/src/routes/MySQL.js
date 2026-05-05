@@ -89,4 +89,20 @@ router.post("/guardarPerfil", (req, res) => {
     });
 });
 
+
+// --- NUEVA RUTA PARA OBTENER LOS HOTELES DE LA BBDD ---
+router.get("/listaHoteles", (req, res) => {
+    // Esta es la consulta SQL para traer todos los datos de la tabla hoteles
+    let sql = "SELECT * FROM hoteles"; 
+    
+    db.query(sql, (err, result) => {
+        if (err) {
+            // Si hay un error (ej: la tabla no existe), avisamos
+            return res.status(500).json({ success: false, error: err.message });
+        }
+        // Si todo va bien, enviamos la lista real de la base de datos
+        res.json(result); 
+    });
+});
+
 module.exports = router;
