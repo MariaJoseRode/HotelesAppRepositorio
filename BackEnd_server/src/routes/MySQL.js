@@ -76,8 +76,9 @@ router.post("/login", (req, res) => {
 router.post("/guardarPerfil", (req, res) => {
     //Variable que recoge los datos de unity
     let nuevoPerfil = {
-        nombre_completo: req.body.NombreUnity,
-        direccion: req.body.DireccionUnity
+        nombre_completo: req.body.NombreUsuario,
+        direccion: req.body.DireccionUsuario,
+        email_usuario: req.body.EmailUsuario
     };
     
     //Inserción en la BBDD "perfiles"
@@ -104,5 +105,25 @@ router.get("/listaHoteles", (req, res) => {
         res.json(result); 
     });
 });
+
+//Ruta get para obtener perfiles
+router.get("/obtenerPerfil", (req, res) => {
+    let mailBuscado = req.query.EmailUsuario;
+    let sql = "SELECT * FROM perfiles WHERE email_usuario =?";
+
+    db.query(sql,[mailBuscado], (err, result) =>{
+         if (err) {
+            return res.status(500).json({ success: false, error: err.message });
+        }
+
+        if (result.length > 0){
+            res.json({success:true, nombre:result[0].nombre_completo, direccion:result[0].direccion});
+        }
+        else{
+            res.json({success: false, mensaje: "perfil vacío"});
+        }
+
+    } )
+})
 
 module.exports = router;
