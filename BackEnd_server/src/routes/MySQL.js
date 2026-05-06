@@ -138,4 +138,21 @@ router.get("/detalleHotel/:id", (req, res) => {
     });
 });
 
+
+router.get("/buscarHotel/:nombre", (req, res) => {
+    const nombreBusqueda = `%${req.params.nombre}%`;
+    const sql = "SELECT * FROM hoteles WHERE nombre_hotel LIKE ?";  //lenguaje SQL para buscar por nombre, el % es un comodín que permite encontrar coincidencias parciales
+
+    db.query(sql, [nombreBusqueda], (err, result) => {
+        if (err) return res.status(500).json({ success: false, error: err.message });
+
+        if (result.length > 0) {
+            
+            res.json({ success: true, datos: result });
+        } else {
+            res.json({ success: false, datos: [] });
+        }
+    });
+});
+
 module.exports = router;
