@@ -2,19 +2,31 @@ const { Router } = require("express");
 const router = Router();
 const mysql = require("mysql");
 
-//  XAMPP local
+//  XAMPP local ANTIGUAAAAA
+//const db = mysql.createConnection({
+ //   host: "localhost",
+ //   user: "root",
+ //   password: "", 
+ //   database: "hoteles_usuarios" 
+//});
+
+// NUEVA BBDD !!!!!
+// --- CONFIGURACIÓN DE LA BASE DE DATOS ONLINE!!!!   (FreeSQLDatabase) ---
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "", 
-    database: "hoteles_usuarios" 
+    host: "sql7.freesqldatabase.com",
+    port: 3306,
+    user: "sql7825618",
+    password: "s9NrKq221V", 
+    database: "sql7825618" 
 });
+
+
 
 db.connect((error) => {
     if (error) {
         console.log("Error en la conexión: " + error);
     } else {
-        console.log("¡Conexión establecida con MySQL!");
+        console.log("¡Conexión establecida con MySQL ONLINE!");
     }
 });
 
@@ -97,11 +109,32 @@ router.get("/listaHoteles", (req, res) => {
     
     db.query(sql, (err, result) => {
         if (err) {
-            // Si hay un error (ej: la tabla no existe), avisamos
+            // Si hay un error en la consulta, respondemos con un error 500 y el mensaje del error
             return res.status(500).json({ success: false, error: err.message });
         }
-        // Si todo va bien, enviamos la lista real de la base de datos
+        
         res.json(result); 
+    });
+    ///http://localhost:8080/api/MySQL/listaHoteles
+});
+
+
+// --- RUTA PARA OBTENER UN HOTEL ESPECÍFICO ---
+router.get("/detalleHotel/:id", (req, res) => {
+    const idRecibido = req.params.id; 
+    // CAMBIO AQUÍ: Usamos id_hotel en lugar de id
+    const sql = "SELECT * FROM hoteles WHERE id_hotel = ?"; 
+
+    db.query(sql, [idRecibido], (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: err.message });
+        }
+        
+        if (result.length > 0) {
+            res.json(result[0]); // Devuelve el hotel encontrado
+        } else {
+            res.status(404).json({ success: false, mensaje: "No existe el hotel con ese ID" });
+        }
     });
 });
 
