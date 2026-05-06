@@ -118,4 +118,24 @@ router.get("/listaHoteles", (req, res) => {
     ///http://localhost:8080/api/MySQL/listaHoteles
 });
 
+
+// --- RUTA PARA OBTENER UN HOTEL ESPECÍFICO ---
+router.get("/detalleHotel/:id", (req, res) => {
+    const idRecibido = req.params.id; 
+    // CAMBIO AQUÍ: Usamos id_hotel en lugar de id
+    const sql = "SELECT * FROM hoteles WHERE id_hotel = ?"; 
+
+    db.query(sql, [idRecibido], (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: err.message });
+        }
+        
+        if (result.length > 0) {
+            res.json(result[0]); // Devuelve el hotel encontrado
+        } else {
+            res.status(404).json({ success: false, mensaje: "No existe el hotel con ese ID" });
+        }
+    });
+});
+
 module.exports = router;
