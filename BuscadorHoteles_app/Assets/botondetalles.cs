@@ -9,49 +9,50 @@ using TMPro;
 public class botondetalles : MonoBehaviour
 {
 
-    public void ClickEnBotonAzul(string nombreDelHotel)
+    public void ClickEnBotonAzul(int idHotel)
     {
-        
-        string nombreEscapado = UnityEngine.Networking.UnityWebRequest.EscapeURL(nombreDelHotel);
-        string urlFinal = "http://localhost:8080/detalle-hotel/" + nombreEscapado;
+        Debug.Log("¡BOTÓN PULSADO! Buscando ID: " + idHotel);
 
-        Debug.Log("Pidiendo a: " + urlFinal); 
-        StartCoroutine(GetDetalleHotel(urlFinal));
+        StartCoroutine(GetDetalleHotel(idHotel));
+
+
     }
 
-    IEnumerator GetDetalleHotel(string uri)
+    public void MostrarPantallaDetalles(HotelData datos)
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(uri))
-        {
-            yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success)
+        Debug.Log("Mostrando detalles de: " + datos.nombre_hotel);
+        Debug.Log(" Precio: " + datos.precio + " EUR");
+        Debug.Log(" Descripcion: " + datos.descripcion + " .");
+    }
+
+    IEnumerator GetDetalleHotel(int id)
+    {
+
+        string url = "http://localhost:8080/api/MySQL/detalleHotel/" + id;
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                HotelData info = JsonUtility.FromJson<HotelData>(request.downloadHandler.text);
-                Debug.Log(" *** DATOS DEL HOTEL *** ");
-                   Debug.Log("Nombre: " + info.nombre);
-                Debug.Log("Descripción: " + info.descripcion);
-                Debug.Log("Estrellas: " + info.estrellas);
-                Debug.Log("Precio: " + info.precio);
-                Debug.Log("            *            ");
                 
-            }
-            else
-            {
-                
-                Debug.LogError("Error: " + request.responseCode + " - " + request.error);
+                Debug.Log("Datos recibidos: " + webRequest.downloadHandler.text);
+
+                HotelData hotelData = JsonUtility.FromJson<HotelData>(webRequest.downloadHandler.text);
+                MostrarPantallaDetalles(hotelData);
             }
         }
     }
 
 
-    [Serializable]
+    [System.Serializable]
     public class HotelData
     {
-        public bool success;
-        public string nombre;
-        public string descripcion;
-        public string precio;
-        public int estrellas;
+        public int id_hotel;        
+        public string nombre_hotel; 
+        public string descripcion;  
+        public int precio;          
     }
 }
