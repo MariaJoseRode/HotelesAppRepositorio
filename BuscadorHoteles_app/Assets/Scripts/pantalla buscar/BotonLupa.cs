@@ -3,7 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
-using static botondetalles;
+//using static botondetalles;
 
 public class BotonLupa : MonoBehaviour
 {
@@ -51,9 +51,11 @@ public class BotonLupa : MonoBehaviour
                     {
                         GameObject nuevoCard = Instantiate(cardPrefab, contenedor);
                         HotelCard scriptCard = nuevoCard.GetComponentInChildren<HotelCard>(); //Creo un nuevo objeto de tipo HotelCard para rellenar los datos del hotel en la card
+                                                                                              // Dentro del foreach de BotonLupa.cs
                         if (scriptCard != null)
                         {
-                            scriptCard.RellenarDatosHotel(hotel.nombre_hotel, hotel.precio, hotel.descripcion); //Llamo a la función que rellena los datos.
+                            // Asegúrate de pasar hotel.id_hotel como primer argumento
+                            scriptCard.RellenarDatosHotel(hotel.id_hotel, hotel.nombre_hotel, hotel.precio, hotel.descripcion);
                         }
                         Debug.Log($" NOMBRE: {hotel.nombre_hotel} |  PRECIO: {hotel.precio}€ |  DESC: {hotel.descripcion}");
                     }
@@ -78,6 +80,7 @@ public class BotonLupa : MonoBehaviour
     [System.Serializable]
     public class InfoHotel
     {
+        public int id_hotel;
         public string nombre_hotel;
         public string descripcion;
         public float precio;
