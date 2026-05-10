@@ -2,23 +2,23 @@ const { Router } = require("express");
 const router = Router();
 const mysql = require("mysql");
 
-//  XAMPP local ANTIGUAAAAA
-//const db = mysql.createConnection({
- //   host: "localhost",
- //   user: "root",
- //   password: "", 
- //   database: "hoteles_usuarios" 
-//});
+// --- CONFIGURACIÓN DE LA BASE DE DATOS LOCAL (XAMPP) ---
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "", 
+    database: "pi" 
+});
 
 // NUEVA BBDD !!!!!
 // --- CONFIGURACIÓN DE LA BASE DE DATOS ONLINE!!!!   (FreeSQLDatabase) ---
-const db = mysql.createConnection({
-    host: "sql7.freesqldatabase.com",
-    port: 3306,
-    user: "sql7825618",
-    password: "s9NrKq221V", 
-    database: "sql7825618" 
-});
+//const db = mysql.createConnection({
+ //   host: "sql7.freesqldatabase.com",
+ //   port: 3306,
+  //  user: "sql7825618",
+  //  password: "s9NrKq221V", 
+  //  database: "sql7825618" 
+//});
 
 
 
@@ -26,7 +26,7 @@ db.connect((error) => {
     if (error) {
         console.log("Error en la conexión: " + error);
     } else {
-        console.log("¡Conexión establecida con MySQL ONLINE!");
+        console.log("¡Conexión establecida con MySQL LOCAL!");
     }
 });
 
@@ -94,9 +94,9 @@ router.post("/guardarPerfil", (req, res) => {
     };
     
     //Inserción en la BBDD "perfiles"
-    let sql = "INSERT INTO perfiles SET ?";
+   let sql = "UPDATE perfiles SET ? WHERE email_usuario = ?";
 
-    db.query (sql, nuevoPerfil, (err, result) => {
+   db.query(sql, [nuevoPerfil, nuevoPerfil.email_usuario], (err, result) => {
         if (err) return res.status(500).json({ success: false, error: err.message});
         res.json({success: true, mensaje: "Se han guardado los datos de tu perfil"})
     });
