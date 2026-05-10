@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.Networking;
-
-
-using UnityEngine.Networking;
 using System.Collections;
 
 public class VerDetalle : MonoBehaviour
@@ -22,9 +19,7 @@ public class VerDetalle : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Datos recibidos: " + webRequest.downloadHandler.text);
-                // Aquí conviertes el JSON y abres tu panel de detalles
-                // HotelData data = JsonUtility.FromJson<HotelData>(webRequest.downloadHandler.text);
-                // MostrarPantallaDetalles(data);
+                
             }
             else
             {

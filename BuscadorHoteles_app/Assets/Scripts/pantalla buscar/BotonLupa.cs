@@ -54,7 +54,7 @@ public class BotonLupa : MonoBehaviour
                                                                                               // Dentro del foreach de BotonLupa.cs
                         if (scriptCard != null)
                         {
-                            // Asegúrate de pasar hotel.id_hotel como primer argumento
+                            
                             scriptCard.RellenarDatosHotel(hotel.id_hotel, hotel.nombre_hotel, hotel.precio, hotel.descripcion);
                         }
                         Debug.Log($" NOMBRE: {hotel.nombre_hotel} |  PRECIO: {hotel.precio}€ |  DESC: {hotel.descripcion}");
@@ -76,7 +76,7 @@ public class BotonLupa : MonoBehaviour
     }
 
 
-    //Clase para recuperar la info del hotel de la BBDD
+    
     [System.Serializable]
     public class InfoHotel
     {
